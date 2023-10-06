@@ -1,6 +1,5 @@
 require('dotenv').config()
-require('./listeners')
+require('./commands')
 
 const { client } = require('./client')
-
 client.login(process.env.DISCORD_TOKEN)
