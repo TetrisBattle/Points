@@ -1,30 +1,30 @@
 const { Events } = require('discord.js')
 const { bot } = require('../bot')
 const { pointsApi } = require('../database/pointsApi')
-const { messageConfig } = require('./messageConfig')
 
-class User {
-	constructor(id, lastMessageTimeStamp) {
-		this.id = id
-		this.lastMessageTimeStamp = lastMessageTimeStamp
-	}
+const messageConfig = {
+	msgReward: 1,
+	spamProtectionInMinutes: 15,
 }
 
 const users = []
 
 bot.on(Events.MessageCreate, async (msg) => {
+	if (message.author.bot) return
+
 	const userIndex = users.findIndex((user) => user.id === msg.author.id)
 	if (userIndex === -1) {
-		users.push(new User(msg.author.id, msg.createdTimestamp))
+		users.push({
+			id: msg.author.id,
+			lastMessageTimeStamp: msg.createdTimestamp,
+		})
 		return
 	}
 
-	const newMessageTimeStamp = msg.createdTimestamp
-	const lastMessageTimeStamp = users[userIndex].lastMessageTimeStamp
-	const timeDiff = newMessageTimeStamp - lastMessageTimeStamp
+	const timeDiff =
+		msg.createdTimestamp - users[userIndex].lastMessageTimeStamp
 	const timeDiffMinutes = Math.abs(timeDiff / 1000 / 60)
-	const giveRewards = timeDiffMinutes >= messageConfig.spamProtectionInMinutes
-	if (!giveRewards) return
+	if (timeDiffMinutes < messageConfig.spamProtectionInMinutes) return
 
 	users[userIndex].lastMessageTimeStamp = msg.createdTimestamp
 	const guild = await bot.guilds.fetch(msg.guildId)
