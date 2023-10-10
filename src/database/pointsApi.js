@@ -35,10 +35,38 @@ const updatePoints = async (guildMember, points) => {
 	if (error) console.error(error)
 }
 
+const addPoints = async (guildMember, newPoints) => {
+	const existingPoints = await getPoints(guildMember.user.id)
+
+	if (existingPoints === null) {
+		await postPoints(guildMember, newPoints)
+		return newPoints
+	} else {
+		const updatedPoints = existingPoints + newPoints
+		await updatePoints(guildMember, updatedPoints)
+		return updatedPoints
+	}
+}
+
+const subtractPoints = async (guildMember, newPoints) => {
+	const existingPoints = await pointsApi.getPoints(guildMember.user.id)
+
+	if (existingPoints === null) {
+		await pointsApi.postPoints(guildMember, newPoints * -1)
+		return newPoints
+	} else {
+		const updatedPoints = existingPoints - newPoints
+		await pointsApi.updatePoints(guildMember, updatedPoints)
+		return updatedPoints
+	}
+}
+
 const pointsApi = {
 	getPoints,
-	postPoints,
-	updatePoints,
+	// postPoints,
+	// updatePoints,
+	addPoints,
+	subtractPoints
 }
 
 exports.pointsApi = pointsApi

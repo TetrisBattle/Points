@@ -28,7 +28,7 @@ const giveFunction = async (interaction) => {
 
 	if (giversPoints === null || giversPoints < points) {
 		interaction.reply(
-			`You don't have enought points\nCurrent balance is ${
+			`You don't have enought points\nYour current balance is ${
 				giversPoints ?? 0
 			} points`
 		)
@@ -36,8 +36,8 @@ const giveFunction = async (interaction) => {
 
 	const updatedGiversPoints = giversPoints - points
 	const updatedReceiversPoints = receiversPoints + points
-	await pointsApi.updatePoints(interaction, updatedGiversPoints)
-	await pointsApi.updatePoints(guildMember, updatedReceiversPoints)
+	await pointsApi.subtractPoints(interaction, updatedGiversPoints)
+	await pointsApi.addPoints(guildMember, updatedReceiversPoints)
 	interaction.reply('Transaction complete!')
 }
 
