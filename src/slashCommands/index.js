@@ -1,6 +1,6 @@
 require('dotenv').config()
-const { REST, Routes } = require('discord.js')
-const { client } = require('../client')
+const { REST, Routes, Events } = require('discord.js')
+const { bot } = require('../bot')
 const { commands } = require('./commands')
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
@@ -26,7 +26,7 @@ rest.put(
 		console.error(error)
 	})
 
-client.on('interactionCreate', (interaction) => {
+bot.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isChatInputCommand()) return
 
 	switch (interaction.commandName) {

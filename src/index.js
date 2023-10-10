@@ -1,6 +1,7 @@
 require('dotenv').config()
 require('./slashCommands')
 require('./messageHandler')
+require('./reactionHandler')
 
-const { client } = require('./client')
-client.login(process.env.DISCORD_TOKEN)
+const { bot } = require('./bot')
+bot.login(process.env.DISCORD_TOKEN)

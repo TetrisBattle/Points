@@ -26,11 +26,11 @@ const addFunction = async (interaction) => {
 		const existingPoints = await pointsApi.getPoints(guildMember.user.id)
 
 		if (existingPoints === null) {
-			pointsApi.postPoints(guildMember, newPoints)
+			await pointsApi.postPoints(guildMember, newPoints)
 			return newPoints
 		} else {
 			const updatedPoints = existingPoints + newPoints
-			pointsApi.updatePoints(guildMember, updatedPoints)
+			await pointsApi.updatePoints(guildMember, updatedPoints)
 			return updatedPoints
 		}
 	}

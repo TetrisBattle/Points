@@ -1,4 +1,5 @@
-const { client } = require('../client')
+const { Events } = require('discord.js')
+const { bot } = require('../bot')
 const { pointsApi } = require('../database/pointsApi')
 const { messageConfig } = require('./messageConfig')
 
@@ -11,7 +12,7 @@ class User {
 
 const users = []
 
-client.on('messageCreate', async (msg) => {
+bot.on(Events.MessageCreate, async (msg) => {
 	const userIndex = users.findIndex((user) => user.id === msg.author.id)
 	if (userIndex === -1) {
 		users.push(new User(msg.author.id, msg.createdTimestamp))
@@ -26,7 +27,7 @@ client.on('messageCreate', async (msg) => {
 	if (!giveRewards) return
 
 	users[userIndex].lastMessageTimeStamp = msg.createdTimestamp
-	const guild = await client.guilds.fetch(msg.guildId)
+	const guild = await bot.guilds.fetch(msg.guildId)
 	const guildMember = await guild.members.fetch(msg.author.id)
 
 	const existingPoints = await pointsApi.getPoints(guildMember.user.id)

@@ -1,16 +1,17 @@
 const { Client, IntentsBitField } = require('discord.js')
 
-const client = new Client({
+const bot = new Client({
 	intents: [
 		IntentsBitField.Flags.Guilds,
 		IntentsBitField.Flags.GuildMembers,
 		IntentsBitField.Flags.GuildMessages,
 		IntentsBitField.Flags.MessageContent,
+		IntentsBitField.Flags.GuildMessageReactions,
 	],
 })
 
-client.on('ready', () => {
-	console.log(`✅ ${client.user.username} is online!`)
+bot.on('ready', () => {
+	console.log(`✅ ${bot.user.username} bot is online!`)
 })
 
-exports.client = client
+exports.bot = bot
