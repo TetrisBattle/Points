@@ -4,7 +4,11 @@ const { client } = require('../client')
 const { commands } = require('./slash')
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
-const commandsBody = [commands.add.command, commands.points.command]
+const commandsBody = [
+	commands.add.command,
+	commands.points.command,
+	commands.subtract.command,
+]
 
 console.log('Registering commands...')
 rest.put(
@@ -31,6 +35,10 @@ client.on('interactionCreate', (interaction) => {
 		}
 		case 'points': {
 			commands.points.function(interaction)
+			break
+		}
+		case 'subtract': {
+			commands.subtract.function(interaction)
 			break
 		}
 	}
