@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { pointsApi } = require('../../database/pointsApi')
+const { getName } = require('../../utils')
 
 const subtractCommand = {
 	name: 'subtract',
@@ -20,7 +21,7 @@ const subtractCommand = {
 	],
 }
 
-const subtractFunction = (interaction) => {
+const subtractFunction = async (interaction) => {
 	const subtractPoints = async (guildMember, newPoints) => {
 		const existingPoints = await pointsApi.getPoints(guildMember.user.id)
 
@@ -37,12 +38,9 @@ const subtractFunction = (interaction) => {
 	const guildMember = interaction.options.getMember('user')
 	const newPoints = interaction.options.getInteger('points')
 
-	subtractPoints(guildMember, newPoints).then((newPoints) => {
-		const name = guildMember.nickname ?? guildMember.user.globalName
-		interaction.reply(
-			`${name} has ${newPoints} points`
-		)
-	})
+	const points = await subtractPoints(guildMember, newPoints)
+	const name = getName(guildMember)
+	interaction.reply(`${name} has ${points} points`)
 }
 
 const subtract = {

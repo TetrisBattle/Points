@@ -1,5 +1,6 @@
 const { ApplicationCommandOptionType } = require('discord.js')
 const { pointsApi } = require('../../database/pointsApi')
+const { getName } = require('../../utils')
 
 const pointsCommand = {
 	name: 'points',
@@ -13,21 +14,17 @@ const pointsCommand = {
 	],
 }
 
-const pointsFunction = (interaction) => {
+const pointsFunction = async (interaction) => {
 	const guildMember = interaction.options.getMember('user')
 
 	if (guildMember) {
-		pointsApi.getPoints(guildMember.user.id).then((points) => {
-			const name =
-				guildMember.nickname ?? guildMember.user.globalName
-			interaction.reply(`${name} has ${points ?? 0} points`)
-		})
+		const points = await pointsApi.getPoints(guildMember.user.id)
+		const name = getName(guildMember)
+		interaction.reply(`${name} has ${points ?? 0} points`)
 	} else {
-		pointsApi.getPoints(interaction.user.id).then((points) => {
-			const name =
-				interaction.nickname ?? interaction.user.globalName
-			interaction.reply(`${name} has ${points ?? 0} points`)
-		})
+		const points = await pointsApi.getPoints(interaction.user.id)
+		const name = getName(interaction)
+		interaction.reply(`${name} has ${points ?? 0} points`)
 	}
 }
 
