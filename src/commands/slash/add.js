@@ -7,7 +7,7 @@ const addCommand = {
 	options: [
 		{
 			name: 'user',
-			description: 'The user to check the balance of',
+			description: 'The user to add points to',
 			type: ApplicationCommandOptionType.User,
 			required: true,
 		},

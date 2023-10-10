@@ -6,6 +6,7 @@ const { commands } = require('./slash')
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 const commandsBody = [
 	commands.add.command,
+	commands.give.command,
 	commands.points.command,
 	commands.subtract.command,
 ]
@@ -31,6 +32,10 @@ client.on('interactionCreate', (interaction) => {
 	switch (interaction.commandName) {
 		case 'add': {
 			commands.add.function(interaction)
+			break
+		}
+		case 'give': {
+			commands.give.function(interaction)
 			break
 		}
 		case 'points': {

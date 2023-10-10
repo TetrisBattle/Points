@@ -7,7 +7,7 @@ const subtractCommand = {
 	options: [
 		{
 			name: 'user',
-			description: 'The user to check the balance of',
+			description: 'The user to subtract points from',
 			type: ApplicationCommandOptionType.User,
 			required: true,
 		},
