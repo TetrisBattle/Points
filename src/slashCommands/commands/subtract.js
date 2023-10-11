@@ -1,25 +1,23 @@
-const { ApplicationCommandOptionType } = require('discord.js')
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js')
 const { pointsApi } = require('../../database/pointsApi')
 const { getName } = require('../../utils')
 
-const subtractCommand = {
-	name: 'subtract',
-	description: 'Subtract points from user',
-	options: [
-		{
-			name: 'user',
-			description: 'The user to subtract points from',
-			type: ApplicationCommandOptionType.User,
-			required: true,
-		},
-		{
-			name: 'points',
-			description: 'The amount of points to subtract',
-			type: ApplicationCommandOptionType.Integer,
-			required: true,
-		},
-	],
-}
+const subtractCommand = new SlashCommandBuilder()
+	.setName('subtract')
+	.setDescription('Subtract points from user')
+	.setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+	.addUserOption((option) =>
+		option
+			.setName('user')
+			.setDescription('The user to subtract points from')
+			.setRequired(true)
+	)
+	.addIntegerOption((option) =>
+		option
+			.setName('points')
+			.setDescription('The amount of points to subtract')
+			.setRequired(true)
+	)
 
 const subtractFunction = async (interaction) => {
 	const guildMember = interaction.options.getMember('user')

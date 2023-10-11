@@ -3,7 +3,6 @@ const { REST, Routes, Events } = require('discord.js')
 const { bot } = require('../bot')
 const { commands } = require('./commands')
 
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 const commandsBody = [
 	commands.add.command,
 	commands.give.command,
@@ -12,6 +11,8 @@ const commandsBody = [
 ]
 
 console.log('Registering commands...')
+
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 rest.put(
 	Routes.applicationGuildCommands(
 		process.env.CLIENT_ID,

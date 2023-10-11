@@ -1,18 +1,15 @@
-const { ApplicationCommandOptionType } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
 const { pointsApi } = require('../../database/pointsApi')
 const { getName } = require('../../utils')
 
-const pointsCommand = {
-	name: 'points',
-	description: 'Check the balance of given user',
-	options: [
-		{
-			name: 'user',
-			description: 'The user to check the balance of',
-			type: ApplicationCommandOptionType.User,
-		},
-	],
-}
+const pointsCommand = new SlashCommandBuilder()
+	.setName('points')
+	.setDescription('Check the balance of given user')
+	.addUserOption((option) =>
+		option
+			.setName('user')
+			.setDescription('The user to check the balance of')
+	)
 
 const pointsFunction = async (interaction) => {
 	const guildMember = interaction.options.getMember('user')

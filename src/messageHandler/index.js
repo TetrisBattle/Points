@@ -3,14 +3,14 @@ const { bot } = require('../bot')
 const { pointsApi } = require('../database/pointsApi')
 
 const messageConfig = {
-	msgReward: 1,
+	reward: 1,
 	spamProtectionInMinutes: 15,
 }
 
 const users = []
 
 bot.on(Events.MessageCreate, async (msg) => {
-	if (message.author.bot) return
+	if (msg.author.bot) return
 
 	const userIndex = users.findIndex((user) => user.id === msg.author.id)
 	if (userIndex === -1) {
@@ -29,5 +29,5 @@ bot.on(Events.MessageCreate, async (msg) => {
 	users[userIndex].lastMessageTimeStamp = msg.createdTimestamp
 	const guild = await bot.guilds.fetch(msg.guildId)
 	const guildMember = await guild.members.fetch(msg.author.id)
-	await pointsApi.addPoints(guildMember, messageConfig.msgReward)
+	await pointsApi.addPoints(guildMember, messageConfig.reward)
 })

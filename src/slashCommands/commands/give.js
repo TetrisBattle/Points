@@ -1,24 +1,21 @@
-const { ApplicationCommandOptionType } = require('discord.js')
+const { SlashCommandBuilder } = require('discord.js')
 const { pointsApi } = require('../../database/pointsApi')
 
-const giveCommand = {
-	name: 'give',
-	description: 'Give points to user',
-	options: [
-		{
-			name: 'user',
-			description: 'The user to check the balance of',
-			type: ApplicationCommandOptionType.User,
-			required: true,
-		},
-		{
-			name: 'points',
-			description: 'The amount of points to give',
-			type: ApplicationCommandOptionType.Integer,
-			required: true,
-		},
-	],
-}
+const giveCommand = new SlashCommandBuilder()
+	.setName('give')
+	.setDescription('Give points to user')
+	.addUserOption((option) =>
+		option
+			.setName('user')
+			.setDescription('The user to give points to')
+			.setRequired(true)
+	)
+	.addIntegerOption((option) =>
+		option
+			.setName('points')
+			.setDescription('The amount of points to give')
+			.setRequired(true)
+	)
 
 const giveFunction = async (interaction) => {
 	const guildMember = interaction.options.getMember('user')
