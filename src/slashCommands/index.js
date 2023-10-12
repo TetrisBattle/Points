@@ -10,8 +10,6 @@ const commandsBody = [
 	commands.subtract.command,
 ]
 
-console.log('Registering commands...')
-
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN)
 rest.put(
 	Routes.applicationGuildCommands(
@@ -19,13 +17,9 @@ rest.put(
 		process.env.GUILD_ID
 	),
 	{ body: commandsBody }
-)
-	.then(() => {
-		console.log('Commands registered!')
-	})
-	.catch((error) => {
-		console.error(error)
-	})
+).catch((error) => {
+	console.error(error)
+})
 
 bot.on(Events.InteractionCreate, (interaction) => {
 	if (!interaction.isChatInputCommand()) return

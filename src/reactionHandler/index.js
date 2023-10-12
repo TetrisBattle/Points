@@ -11,23 +11,32 @@ const users = []
 
 bot.on(Events.MessageReactionAdd, async (reaction, user) => {
 	if (reaction.message.author.bot) return
+	const userIndex = users.findIndex(
+		(user) => user.id === reaction.message.author.id
+	)
+	if (!isSpam(userIndex, reaction)) return
+	await giveReward(userIndex, reaction, user)
+})
 
-	const userIndex = users.findIndex((user) => user.id === reaction.message.author.id)
+function isSpam(userIndex) {
+	if (userIndex === -1) return false
+
+	const timeDiff = Date.now() - users[userIndex].lastMessageTimeStamp
+	const timeDiffMinutes = Math.abs(timeDiff / 1000 / 60)
+	return timeDiffMinutes < reactionConfig.spamProtectionInMinutes
+		? true
+		: false
+}
+
+async function giveReward(userIndex, reaction, user) {
 	if (userIndex === -1) {
 		users.push({
 			id: reaction.message.author.id,
-			lastMessageTimeStamp: reaction.message.createdTimestamp,
+			lastMessageTimeStamp: Date.now(),
 		})
-		return
-	}
+	} else users[userIndex].lastMessageTimeStamp = Date.now()
 
-	const timeDiff =
-		reaction.message.createdTimestamp - users[userIndex].lastMessageTimeStamp
-	const timeDiffMinutes = Math.abs(timeDiff / 1000 / 60)
-	if (timeDiffMinutes < reactionConfig.spamProtectionInMinutes) return
-
-	users[userIndex].lastMessageTimeStamp = reaction.message.createdTimestamp
 	const guild = await bot.guilds.fetch(reaction.message.guildId)
 	const guildMember = await guild.members.fetch(user.id)
 	await pointsApi.addPoints(guildMember, reactionConfig.reward)
-})
+}
