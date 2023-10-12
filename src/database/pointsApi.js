@@ -66,7 +66,7 @@ const pointsApi = {
 	// postPoints,
 	// updatePoints,
 	addPoints,
-	subtractPoints
+	subtractPoints,
 }
 
 exports.pointsApi = pointsApi
