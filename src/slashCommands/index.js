@@ -5,6 +5,7 @@ const { commands } = require('./commands')
 
 const commandsBody = [
 	commands.add.command,
+	commands.daily.command,
 	commands.give.command,
 	commands.points.command,
 	commands.subtract.command,
@@ -27,6 +28,10 @@ bot.on(Events.InteractionCreate, (interaction) => {
 	switch (interaction.commandName) {
 		case 'add': {
 			commands.add.function(interaction)
+			break
+		}
+		case 'daily': {
+			commands.daily.function(interaction)
 			break
 		}
 		case 'give': {
